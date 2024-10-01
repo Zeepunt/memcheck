@@ -1,16 +1,24 @@
+/*
+ * Copyright (c) 2024 by Zeepunt, All Rights Reserved. 
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <memcheck/memcheck.h>
 
-void *test_malloc(size_t size)
+static void *test_malloc(size_t size)
 {
     void *ptr = malloc(size);
-    memcheck_add(ptr, size);
+    if (NULL != ptr) {
+        memcheck_add(ptr, size);
+    }
     return ptr;
 }
 
-void test_free(void *ptr)
+static void test_free(void *ptr)
 {
+    if (NULL == ptr) {
+        return;
+    }
     free(ptr);
     memcheck_del(ptr);
 }

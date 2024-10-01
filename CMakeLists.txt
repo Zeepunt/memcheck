@@ -15,10 +15,9 @@ set(CMAKE_CXX_EXTENSIONS ON)
 project(memcheck LANGUAGES C CXX)
 
 file(GLOB_RECURSE memcheck_src CONFIGURE_DEPENDS src/*.c)
-file(GLOB_RECURSE example_src CONFIGURE_DEPENDS example/*.c)
+file(GLOB_RECURSE example_src CONFIGURE_DEPENDS example/Linux/*.c)
 
 add_executable(example)
 
 target_sources(example PRIVATE ${memcheck_src} ${example_src})
 target_include_directories(example PUBLIC inc)
-target_compile_options(example PRIVATE -Wno-static-in-inline)

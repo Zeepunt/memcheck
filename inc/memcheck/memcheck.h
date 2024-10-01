@@ -9,11 +9,38 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <memcheck/memcheck_config.h>
 
-#define MEMCHECK_DEBUG(fmt, arg...) \
-    do {                            \
-        printf(fmt, ##arg);         \
+#ifndef NULL
+#define NULL ((void *)0)
+#endif
+
+#if MEMCHECK_TRACE_ON
+#define MEMCHECK_TRACE(fmt, ...)                      \
+    do {                                              \
+        printf("[trace] " fmt "\r\n", ##__VA_ARGS__); \
     } while (0)
+#else
+#define MEMCHECK_TRACE(fmt, ...)
+#endif /* MEMCHECK_TRACE_ON */
+
+#if MEMCHECK_PRINT_ON
+#define MEMCHECK_PRINT(fmt, ...)           \
+    do {                                   \
+        printf(fmt "\r\n", ##__VA_ARGS__); \
+    } while (0)
+#else
+#define MEMCHECK_PRINT(fmt, ...)
+#endif /* MEMCHECK_PRINT_ON */
+
+#if MEMCHECK_ERROR_ON
+#define MEMCHECK_ERROR(fmt, ...)                      \
+    do {                                              \
+        printf("[error] " fmt "\r\n", ##__VA_ARGS__); \
+    } while (0)
+#else
+#define MEMCHECK_PRINT(fmt, ...)
+#endif /* MEMCHECK_ERROR_ON */
 
 void memcheck_enable(void);
 void memcheck_disable(void);

@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2024 by Zeepunt, All Rights Reserved. 
  */
-#ifndef __LIST_H__
-#define __LIST_H__
+#ifndef __MEMCHECK_LIST_H__
+#define __MEMCHECK_LIST_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -635,4 +635,4 @@ static inline void list_splice_tail_init(struct list_head *list,
 }
 #endif
 
-#endif /* __LIST_H__ */
+#endif /* __MEMCHECK_LIST_H__ */
