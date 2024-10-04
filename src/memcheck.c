@@ -34,13 +34,15 @@ static unsigned char _mem_flag = 0;
 
 void memcheck_enable(void)
 {
+    int i = 0;
+    int j = 0;
     _mem_flag = 1;
 
-    for (int i = 0; i < MEMCHECK_TRACE_MAX; i++) {
+    for (i = 0; i < MEMCHECK_TRACE_MAX; i++) {
         _mem_info_array[i].ptr = NULL;
         _mem_info_array[i].size = 0;
 #if MEMCHECK_BACKTRACE_ON
-        for (unsigned int j = 0; j < MEMCHECK_BACKTRACE_MAX; j++) {
+        for (j = 0; j < MEMCHECK_BACKTRACE_MAX; j++) {
             _mem_info_array[i].backtrace[j] = NULL;
         }
 #endif /* MEMCHECK_BACKTRACE_ON */
@@ -50,6 +52,7 @@ void memcheck_enable(void)
 
 void memcheck_disable(void)
 {
+    int i = 0;
     unsigned int total_size = 0;
     mem_trace_info_t *info = NULL;
     struct list_head *pos = NULL;
@@ -63,9 +66,9 @@ void memcheck_disable(void)
         MEMCHECK_PRINT("malloc ptr: 0x%x, size: %d.", info->ptr, info->size);
         total_size += info->size;
 #if MEMCHECK_BACKTRACE_ON
-        for (int i = 0; i < MEMCHECK_BACKTRACE_MAX; i++) {
-            if (0 != info->backtrace[i]) {
-                MEMCHECK_PRINT("backtrace: %p [%s].", info->backtrace[i], (((unsigned long)info->backtrace[i] & 0x01) == 0 ? "Arm" : "Thumb"));
+        for (i = 0; i < MEMCHECK_BACKTRACE_MAX; i++) {
+            if (NULL != info->backtrace[i]) {
+                MEMCHECK_PRINT("backtrace: %p.", info->backtrace[i]);
             }
         }
 #endif /* MEMCHECK_BACKTRACE_ON */

@@ -11,6 +11,7 @@ typedef struct cortex_m4_frame_record {
 
 void backtrace_cortex_m4(void **ptr_array, unsigned int ptr_array_size)
 {
+    int i = 0;
     cortex_m4_frame_record_t *frame_record_ptr = NULL;
 
     if ((NULL == ptr_array) || (0 == ptr_array_size)) {
@@ -20,8 +21,10 @@ void backtrace_cortex_m4(void **ptr_array, unsigned int ptr_array_size)
     MEMCHECK_TRACE("backtrace enter.");
 
     /**
+     * 对于 Thumb, 使用 r7 寄存器表示 fp (frame pointer)
+     * 
      * 对于 RT-Thread:
-     *   如果从 fp (r7) 拿到的数值是 0xdeadbeef, 说明 fp 并没有启用
+     *   如果从 fp 拿到的数值是 0xdeadbeef, 说明 fp 并没有启用
      *   对于 GCC 编译器:
      *     1. 添加 -fno-omit-frame-pointer -mapcs-frame -funwind-tables -fno-optimize-sibling-calls
      *     2. 如果要打印详细信息, 优化等级设为 -O0
@@ -37,7 +40,7 @@ void backtrace_cortex_m4(void **ptr_array, unsigned int ptr_array_size)
      */
     __asm volatile ("mov %0, r7" : "=r" (frame_record_ptr));
 
-    for (int i = 0; i < ptr_array_size; i++) {
+    for (i = 0; i < ptr_array_size; i++) {
         MEMCHECK_TRACE("frame_record_ptr: %p.", frame_record_ptr);
         if ((NULL == frame_record_ptr) || (0xdeadbeef == (unsigned long)frame_record_ptr)) {
             break;

@@ -1,18 +1,46 @@
-## 一、功能说明
+## 一、配置说明
 
-- **MEMCHECK_BACKTRACE_ON**
+相关配置都定义在 `inc/memcheck/memcheck_config.h` 头文件中。
+
+### 1、Debug
+
+输出打印控制。
+
+### 2、Function
+
+memcheck 所支持的功能，默认是支持 memcheck 功能，即内存泄漏检测。
+
+- `MEMCHECK_BACKTRACE_ON`
+
+  该功能是用来回溯发生内存泄漏时，malloc 时的函数调用过程，比如：xxx -> xxx -> xxx -> malloc。
 
   对于 Keil + Arm Compiler 6 来说，需要在 Options -> C/C++ -> Misc Controls 中添加编译器标志位：
 
   ```shell
-  -fno-omit-frame-pointer -funwind-tables -fno-optimize-sibling-calls
+  -fno-omit-frame-pointer
   ```
 
-  对于 GCC 来说，目前暂未支持
+  对于 GCC 来说，目前暂未支持。
+
+### 3、Function Config
+
+- `MEMCHECK_TRACE_MAX`
+
+  内存泄漏检测的最大个数，其大小取决内存大小和频繁 malloc 的次数，数值越大，所使用内存就越大。
+
+- `MEMCHECK_BACKTRACE_MAX`
+
+  仅在 `MEMCHECK_BACKTRACE_ON` 启用时生效，表示最大可以追溯的内存调用次数。
+
+### 4、Arch
+
+当前支持的架构，具体参考 memcheck_config.h 文件。
 
 ### 二、测试环境说明
 
 #### RT-Thread 5.0.2
+
+架构：`MEMCHECK_ARCH_CORTEX_M4`。
 
 测试环境有两种：
 
@@ -40,6 +68,8 @@
    ```
 
 #### Linux
+
+架构：`MEMCHECK_ARCH_SIMULATOR`。
 
 测试用例编译。
 

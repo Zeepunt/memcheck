@@ -27,6 +27,16 @@ static void test_free(void *ptr)
     memcheck_del(ptr);
 }
 
+static void test_func_1(char *format, ...)
+{
+    va_list args;
+    void *buf = test_malloc(34);
+
+    va_start(args, format);
+    vsprintf(buf, format, args);
+    va_end(args);
+}
+
 int main(void)
 {
     void *ptr = NULL;
@@ -39,6 +49,8 @@ int main(void)
     test_free(ptr);
 
     ptr = test_malloc(512);
+
+    test_func_1("test function 1");
 
     memcheck_disable();
 
