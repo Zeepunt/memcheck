@@ -14,13 +14,13 @@ memcheck 所支持的功能，默认是支持 memcheck 功能，即内存泄漏�
 
   该功能是用来回溯发生内存泄漏时，malloc 时的函数调用过程，比如：xxx -> xxx -> xxx -> malloc。
 
-  对于 Keil + Arm Compiler 6 来说，需要在 Options -> C/C++ -> Misc Controls 中添加编译器标志位：
+  对于 Crotex-M4 来说，有两种选择：
 
-  ```shell
-  -fno-omit-frame-pointer
-  ```
+  1. 对于 Keil + Arm Compiler 6 来说，`M4_USE_FRAME_RECORD` 开启或关闭都可以。
+  
+     如果开启了 M4_USE_FRAME_RECORD，则需要在 Options -> C/C++ -> Misc Controls 中添加编译器标志位：`-fno-omit-frame-pointer`。
 
-  对于 GCC 来说，目前暂未支持。
+  2. 对于 GCC 来说，目前只能关闭 M4_USE_FRAME_RECORD。
 
 ### 3、Function Config
 
@@ -35,6 +35,12 @@ memcheck 所支持的功能，默认是支持 memcheck 功能，即内存泄漏�
 ### 4、Arch
 
 当前支持的架构，具体参考 memcheck_config.h 文件。
+
+### 5、Information
+
+提供设备环境信息。
+
+- 设备的 RAM 和 FLASH 的地址范围，用于检测地址的有效性，如果有多个 RAM 和 FLASH，可自行扩展，但记得修改 memcheck.h 文件里面的 MEMECHK_ADDR_VALID 宏。
 
 ### 二、测试环境说明
 

@@ -42,6 +42,10 @@ extern "C" {
 #define MEMCHECK_PRINT(fmt, ...)
 #endif /* MEMCHECK_ERROR_ON */
 
+#define MEMECHK_ADDR_VALID(addr)                                                                         \
+    ((((unsigned long)addr >= MEMCEHCK_RAM_ADDR_START) && ((unsigned long)addr < MEMCHECK_RAM_ADDR_END)) \
+     || (((unsigned long)addr >= MEMCEHCK_FLASH_ADDR_START) && ((unsigned long)addr < MEMCHECK_FLASH_ADDR_END)))
+
 void memcheck_enable(void);
 void memcheck_disable(void);
 
